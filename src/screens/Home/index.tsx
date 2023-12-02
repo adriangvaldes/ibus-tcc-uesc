@@ -6,6 +6,7 @@ import { busStops } from "../../utils/busStops";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { GetBusLocations } from "../../api/axios";
 import { MotiView } from "moti";
+import { estimationVehiclesArrive } from "../../Functions/extracData";
 const LATITUDE_DELTA = 0.00922;
 const LONGITUDE_DELTA = 0.00421;
 
@@ -17,10 +18,9 @@ type BusStopT = {
   stopId?: string;
 }
 type Bus = {
-  dirTag: string;
-  id?: string;
-  lat: string;
-  lon: string;
+  id: string;
+  distance: number;
+  arrivalTime: number;
 }
 
 export function Home() {
@@ -48,8 +48,9 @@ export function Home() {
   }
 
   async function getBusInfo(stop: BusStopT) {
-    const busData = await GetBusLocations();
-    if (busData?.length > 0) setBusesInCirculation(busData);
+    // const busData = await GetBusLocations();
+    const data = await estimationVehiclesArrive(1, 5);
+    if (data?.length > 0) setBusesInCirculation(data);
     setModalStopInfoShow(true);
     setStopSelected(stop);
   }
@@ -72,8 +73,7 @@ export function Home() {
                 <View style={styles.busArriveInfoContainer} key={bus.id}>
                   <MaterialCommunityIcons name="bus-clock" size={32} color="black" />
                   <Text style={styles.busIdText}>{bus.id}</Text>
-                  <Text style={styles.timeBusText}>- <Text style={styles.numberTime}>1</Text>  min</Text>
-                  <Text style={styles.busIdText}>... </Text>
+                  <Text style={styles.timeBusText}>-  ~ <Text style={styles.numberTime}>{Math.round(bus.arrivalTime)}</Text>  min...</Text>
                 </View>
               )}
           </MotiView>
