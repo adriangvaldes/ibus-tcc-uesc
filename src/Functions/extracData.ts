@@ -47,7 +47,9 @@ export async function estimationVehiclesArrive(sentido: 1 | 2, stopTag: string) 
 
   const response = vehicleLocation; // CHANGE TO DEFINITIVE
   const parsedObject = parser.parse(response.replace('?xml', 'xml'))
+
   // const parsedObject = parser.parse(response.data.replace('?xml', 'xml'))
+
 
   if (parsedObject?.xml?.body?.vehicle?.length > 0) {
     const linesToAdd = parsedObject?.xml?.body?.vehicle.map((vehicle: any) => ([
@@ -60,7 +62,17 @@ export async function estimationVehiclesArrive(sentido: 1 | 2, stopTag: string) 
       vehicle['$speedKmHr'],
     ]))
     lines = [...linesToAdd]
-  }
+  } else if (parsedObject?.xml?.body?.vehicle['$id']) lines = [[
+    timeStamp,
+    parsedObject?.xml?.body?.vehicle['$id'],
+    parsedObject?.xml?.body?.vehicle['$dirTag'] === 'west' ? 2 : parsedObject?.xml?.body?.vehicle['$dirTag'] === 'east' ? 1 : 0,
+    parsedObject?.xml?.body?.vehicle['$lat'],
+    parsedObject?.xml?.body?.vehicle['$lon'],
+    timeStamp,
+    parsedObject?.xml?.body?.vehicle['$speedKmHr'],
+  ]]
+
+  console.log(lines, request_stop);
 
   //Parte de predição
   const n = lines.length;

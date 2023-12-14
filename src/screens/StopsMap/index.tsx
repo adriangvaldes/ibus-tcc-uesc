@@ -92,7 +92,8 @@ export function StopsMap() {
             transition={{ type: 'timing' }}
           >
             {!loading ? <>
-              <Text style={{ position: 'absolute', right: 20, top: 10, color: colors.black, fontWeight: 'bold' }} onPress={() => setModalStopInfoShow(false)}>X</Text>
+              <Text style={{ position: 'absolute', right: 20, top: 10, color: colors.black, fontWeight: 'bold' }}
+                onPress={() => setModalStopInfoShow(false)}>X</Text>
               {busesInCirculation.length > 0 ?
                 <>
                   <Text style={styles.stopModalTitle}>{stopSelected?.title}</Text>

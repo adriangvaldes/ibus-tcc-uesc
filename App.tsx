@@ -9,6 +9,7 @@ import { StopsMap } from './src/screens/StopsMap';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
   return (
     <NavigationContainer>
       <PaperProvider>
